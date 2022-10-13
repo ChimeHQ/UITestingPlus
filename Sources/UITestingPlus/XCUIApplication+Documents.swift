@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 
+#if os(macOS)
 public extension XCUIApplication {
 	func saveFrontmostDocument() throws {
 		XCTContext.runActivity(named: "Save frontmost document") { (activity) in
@@ -71,4 +72,4 @@ public extension XCUIApplication {
 		return windows[url.lastPathComponent]
 	}
 }
-
+#endif
