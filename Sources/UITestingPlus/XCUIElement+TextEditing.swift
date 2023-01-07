@@ -1,9 +1,10 @@
 import Foundation
 import XCTest
 
+#if os(macOS)
 public extension XCUIElement {
     /// Replaces the existing text in a field with the given text.
-    func replaceTextWith(_ string: String) {
+	func replaceTextWith(_ string: String) {
         click()
         typeKey("a", modifierFlags: .command)
         typeText(string)
@@ -31,6 +32,7 @@ public extension XCUIElement {
         typeKey(.delete, modifierFlags: [])
     }
 }
+#endif
 
 enum XCUIElementError: Error {
 	case noStringValue
@@ -50,6 +52,7 @@ public extension XCUIElement {
 		return stringValue.substring(with: r) as String
 	}
 
+#if os(macOS)
 	/// Uses arrow keys to position insertion point within a text view
 	func navigateTextView(to line: Int, column: Int) throws {
 		for _ in 0..<line {
@@ -60,4 +63,5 @@ public extension XCUIElement {
 			typeKey(.rightArrow, modifierFlags: [])
 		}
 	}
+#endif
 }
