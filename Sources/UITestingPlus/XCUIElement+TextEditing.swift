@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-extension XCUIElement {
+public extension XCUIElement {
     /// Replaces the existing text in a field with the given text.
     func replaceTextWith(_ string: String) {
         click()
@@ -30,4 +30,34 @@ extension XCUIElement {
         typeKey("a", modifierFlags: .command)
         typeKey(.delete, modifierFlags: [])
     }
+}
+
+enum XCUIElementError: Error {
+	case noStringValue
+}
+
+public extension XCUIElement {
+	func stringValue(in range: NSRange? = nil) throws -> String {
+		guard let stringValue = self.value as? NSString else {
+			XCTFail("unable to read string value")
+			throw XCUIElementError.noStringValue
+		}
+
+		guard let r = range else {
+			return stringValue as String
+		}
+
+		return stringValue.substring(with: r) as String
+	}
+
+	/// Uses arrow keys to position insertion point within a text view
+	func navigateTextView(to line: Int, column: Int) throws {
+		for _ in 0..<line {
+			typeKey(.downArrow, modifierFlags: [])
+		}
+
+		for _ in 0..<column {
+			typeKey(.rightArrow, modifierFlags: [])
+		}
+	}
 }

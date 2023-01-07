@@ -3,7 +3,7 @@
 [![Documentation][documentation badge]][documentation]
 
 # UITestingPlus
-Utilities for working with XCUI testing
+Utilities for working with XCUI testing.
 
 ## Integration
 
@@ -13,21 +13,60 @@ dependencies: [
 ]
 ```
 
-## Usage
+## XCUIApplication Extensions
 
-### Controlling Launch-Time Window State
+### Menus
 
 ```swift
-class MyTests: XCTestCase {
-    lazy var app = XCUIApplication()
-    
-    override func setUp() {
-        super.setUp()
-        
-        app.launchWithNoWindows()
-        app.resetLaunchEnvironmentAndArguments()
-    }
+var windowMenuItemTitles: [String]
+var windowMenuItemWindowTitles: [String]
+var recentMenuItemTitles: [String]
 ```
+
+### Windows
+
+```swift
+func launchWithNoWindows()
+func closeExistingWindows()
+var frontWindow: XCUIElement
+func resetLaunchEnvironmentAndArguments()
+func quit()
+```
+
+### Documents
+
+```swift
+func saveFrontmostDocument() throws
+func closeFrontmostDocument() throws
+func createNewDocument() throws
+func saveDocument(in window: XCUIElement) throws
+func saveDocument(in window: XCUIElement, to url: URL, overwrite: Bool = true) throws
+func openDocument(with url: URL) -> XCUIElement
+```
+
+## XCUIElement Extensions
+
+### Text Editing
+
+```swift
+func replaceTextWith(_ string: String)
+func replaceTextWithPasteboard()
+func appendText(_ string: String)
+func deleteText()
+
+func stringValue(in range: NSRange? = nil) throws -> String
+func navigateTextView(to line: Int, column: Int) throws
+```
+
+### Existance
+
+```swift
+func waitForNonExistence(timeout: TimeInterval) -> Bool
+```
+
+## Classes
+
+- `HittableElementExpectation`
 
 ## Suggestions or Feedback
 
