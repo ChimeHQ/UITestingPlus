@@ -44,6 +44,16 @@ func saveDocument(in window: XCUIElement, to url: URL, overwrite: Bool = true) t
 func openDocument(with url: URL) -> XCUIElement
 ```
 
+### Built-in Applications
+
+```swift
+static let springboard: XCUIApplication
+static let safari: XCUIApplication
+static let settings: XCUIApplication
+static let files: XCUIApplication
+static let photos: XCUIApplication
+```
+
 ## XCUIElement Extensions
 
 ### Text Editing
