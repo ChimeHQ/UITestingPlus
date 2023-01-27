@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-extension XCUIElement {
+public extension XCUIElement {
     
     /// Returns true if the element's `isHittable` property is true within `timeout` seconds
     func waitForHittable(timeout: TimeInterval) -> Bool {

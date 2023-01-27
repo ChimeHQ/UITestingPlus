@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-extension XCUIElement {
+public extension XCUIElement {
     
     /// Returns true if the element exists within 3 seconds
     var existsSoon: Bool {
