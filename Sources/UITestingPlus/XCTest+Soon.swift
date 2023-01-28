@@ -8,7 +8,7 @@ public enum XCTestSoon {
 }
 
 /// Returns true if `expression` evaluates to true within `waitTime` (default 3 seconds)
-public func IsTrueSoon(_ expression: @autoclosure () throws -> Bool, waitTime: TimeInterval = XCTestSoon.defaultWaitTime) -> Bool {
+public func IsTrueSoon(_ expression: @autoclosure () throws -> Bool, waitTime: TimeInterval = XCTestSoon.defaultWaitTime) rethrows -> Bool {
     let startTime = Date()
     repeat {
         let success = (try? expression()) ?? false
@@ -21,12 +21,12 @@ public func IsTrueSoon(_ expression: @autoclosure () throws -> Bool, waitTime: T
     }
     while Date().timeIntervalSince(startTime) < waitTime
     
-    return (try? expression()) ?? false
+    return try expression()
 }
 
 /// Drop-in replacement for `XCTAssert` that gives `waitTime` (default 3 seconds) for `expression` to evaluate to true
 public func XCTAssertSoon(_ expression: @autoclosure () throws -> Bool, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line, waitTime: TimeInterval = XCTestSoon.defaultWaitTime) {
-    XCTAssert(IsTrueSoon(try expression(), waitTime: waitTime), message(), file: file, line: line)
+    try XCTAssert(IsTrueSoon(expression(), waitTime: waitTime), message(), file: file, line: line)
 }
 
 /// Drop-in replacement for XCTUnwrap that gives `waitTime` (default 3 seconds) for `expression` to evaluate to non-nil
@@ -47,19 +47,19 @@ public func XCTUnwrapSoon<T>(_ expression: @autoclosure () throws -> T?, _ messa
 
 /// Drop-in replacement for `XCTAssertEqual` that gives `waitTime` (default 3 seconds) for `expression1` to evaluate to equal to `expression2`
 public func XCTAssertEqualSoon<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line, waitTime: TimeInterval = XCTestSoon.defaultWaitTime) where T : Equatable {
-    if IsTrueSoon((try? expression1() == (try? expression2())) ?? false, waitTime: waitTime) {
+    if (try? IsTrueSoon(expression1() == expression2(), waitTime: waitTime)) ?? false {
         return
     }
     
-    XCTAssertEqual(try? expression1(), try? expression2(), message(), file: file, line: line)
+    XCTAssertEqual(try expression1(), try expression2(), message(), file: file, line: line)
 
 }
 
 /// Drop-in replacement for `XCTAssertNotEqual` that gives `waitTime` (default 3 seconds) for `expression1` to evaluate not equal to `expression2`
 public func XCTAssertNotEqualSoon<T>(_ expression1: @autoclosure () throws -> T, _ expression2: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "", file: StaticString = #filePath, line: UInt = #line, waitTime: TimeInterval = XCTestSoon.defaultWaitTime) where T : Equatable {
-    if IsTrueSoon((try? expression1() != (try? expression2())) ?? false, waitTime: waitTime) {
+    if (try? IsTrueSoon(expression1() != expression2(), waitTime: waitTime)) ?? false {
         return
     }
 
-    XCTAssertNotEqual(try? expression1(), try? expression2(), message(), file: file, line: line)
+    XCTAssertNotEqual(try expression1(), try expression2(), message(), file: file, line: line)
 }
